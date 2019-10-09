@@ -1,7 +1,7 @@
 state("ffxiii2img")
 {
 	int begin			: "ffxiii2img.exe", 0x003921EC, 0x4;
-	byte results		: "ffxiii2img.exe", 0x00845FE8, 0x7;
+	short begin2		: "ffxiii2img.exe", 0x003921EC, 0x5;
 	uint time			: "ffxiii2img.exe", 0x001DA2A0, 0x0;
 	int battle_base		: "ffxiii2img.exe", 0x0211E3E0, 0x14, 0x0, 0x0;
 	
@@ -33,8 +33,6 @@ state("ffxiii2img")
 init
 {
 	vars.time0 = 4294967295;
-	vars.flip = 0;
-	vars.flip_max = -1;
 	vars.split = false;
 }
 
@@ -77,87 +75,104 @@ split
 	
 	if( settings["gogmagogASet"] & old.gogmagog1 == 0 & current.gogmagog1 != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["gogmagogBSet"] & old.gogmagog2 == 0 & current.gogmagog2 != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["paradoxSet"] & old.paradox == 0 & current.paradox != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["atlasSet"] &  old.atlas == 0 & current.atlas != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["aloeidaiSet"] & old.aloeidai == 0 & current.aloeidai != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["royalSet"] & old.royal == 0 & current.royal != 0 ) 
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["miniflanSet"] & old.miniflan == 0 & current.miniflan != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["goblinSet"] & old.goblin == 0 & current.goblin != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["faerylSet"] & old.faeryl == 0 & current.faeryl != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["mutantSet"] & old.mutant == 0 & current.mutant != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["caius1Set"] & old.caius1 == 0 & current.caius1 != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["zenobiaSet"] & old.zenobia == 0 & current.zenobia != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["adamSet"] & old.adam == 0 & current.adam != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["caius2Set"] & old.caius2 == 0 & current.caius2 != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["gogmagog3Set"] & old.gogmagog3 == 0 & current.gogmagog3 != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( settings["pacosSet"] & old.pacos == 0 & current.pacos != 0 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	if( old.target != 673000 & current.target == 673000 )
 	{
-		vars.split = true;
+		//vars.split = true;
+		vars.time0 = current.time + 2300;
 	}
 	
 	// Split for every fight
@@ -167,11 +182,28 @@ split
 	}*/
 	
 	// Split
-	if(vars.split == true)
+	/*if(vars.split == true)
 	{
-		if(old.battle_base != current.battle_base)
+		//if(old.battle_base != current.battle_base)
+		if(current.begin2 < 100 & old.begin2 >= 100)
 		{
 			vars.split = false;
+			return true;
+		}
+	}*/
+	
+	// Final Split
+	if(current.time > vars.time0)
+	{
+		if(current.begin2 < 100 & old.begin2 >= 100)
+		{
+			vars.time0 = 4294967295;
+			return true;
+		}
+		
+		if(current.time > vars.time0 + 1000 & current.begin == 0)
+		{
+			vars.time0 = 4294967295;
 			return true;
 		}
 	}
